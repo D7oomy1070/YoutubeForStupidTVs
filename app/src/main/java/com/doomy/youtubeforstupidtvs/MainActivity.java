@@ -1,41 +1,36 @@
 package com.doomy.youtubeforstupidtvs;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
-import com.google.android.youtube.player.YouTubeStandalonePlayer;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.util.List;
 
 public class MainActivity extends YouTubeBaseActivity {
 
     YouTubePlayerView mYouTubePlayerView;
     YouTubePlayer.OnInitializedListener mOnInitializedListener;
     UDP_Recive udp_recive;
-    Handler UiHandler = new Handler();
-    Recive recive;
+    ReciveThreadClass reciveThreadClass;
     Button bu1;
     MainActivity mainActivity = this;
     boolean thereIsVideoPlaying = false;
     YouTubePlayer youTubePlayer = null;
+    EditText et1;
+    RunnablesClass runnablesClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +40,12 @@ public class MainActivity extends YouTubeBaseActivity {
         setContentView(R.layout.activity_main);
 
         mYouTubePlayerView = (YouTubePlayerView) findViewById(R.id.view2);
+        et1 = (EditText)findViewById(R.id.et1);
+        runnablesClass = new RunnablesClass();
 
 
 
-
-        recive = new Recive("ReciveThread");
+        reciveThreadClass = new ReciveThreadClass("ReciveThread");
 
         Runnable task = new Runnable() {
             @Override
@@ -67,7 +63,7 @@ public class MainActivity extends YouTubeBaseActivity {
                     Msg = new String(buffer, 0,dp.getLength());
 
 
-                    if(Msg == "s") {
+
 
                         String finalMsg = Msg;
                         runOnUiThread(new Runnable() {
@@ -81,7 +77,7 @@ public class MainActivity extends YouTubeBaseActivity {
 
                                         youTubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.MINIMAL);
                                         if (!mainActivity.thereIsVideoPlaying) {
-                                            youTubePlayer.loadVideo(finalMsg);
+                                            youTubePlayer.loadVideo("MV5gmbCFris");
                                             mainActivity.thereIsVideoPlaying = true;
                                             Toast.makeText(getApplicationContext(), "Initialized", Toast.LENGTH_SHORT).show();
 
@@ -96,10 +92,8 @@ public class MainActivity extends YouTubeBaseActivity {
                                 };
 
                                 mYouTubePlayerView.initialize("Video", mOnInitializedListener);
-
                             }
                         });
-                    }
 
 
                     Log.i("Message","Meassge Received: " + Msg);
@@ -112,40 +106,22 @@ public class MainActivity extends YouTubeBaseActivity {
             }
         };
 
-        recive.start();
-        recive.prepareHandler();
-        recive.postTask(task);
+        reciveThreadClass.start();
+        reciveThreadClass.prepareHandler();
+        reciveThreadClass.postTask(task);
 
-        //udp_recive = new UDP_Recive(mYouTubePlayerView,mOnInitializedListener);
-        //udp_recive.run();
-        bu1 = (Button) findViewById(R.id.bu1);
+    }
 
-        bu1.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
-            @Override
-            public void onClick(View v) {
-                if(mainActivity.thereIsVideoPlaying){
-                    youTubePlayer.release();
-                    mainActivity.thereIsVideoPlaying = false;
-                    Toast.makeText(getApplicationContext(),"released",Toast.LENGTH_SHORT).show();
-
-                }
-                //mYouTubePlayerView.initialize("fe",mOnInitializedListener);
-
-            }
-
-        });
-
-        //udp_recive.RecivedMSG;
-
+    public void BuOnClick(View view){
+        Release();
     }
 
     void Release(){
         if(thereIsVideoPlaying){
             youTubePlayer.release();
-            mYouTubePlayerView.initialize("fe",mOnInitializedListener);
-            Toast.makeText(getApplicationContext(),"released",Toast.LENGTH_SHORT).show();
             thereIsVideoPlaying = false;
+            Toast.makeText(getApplicationContext(),"released",Toast.LENGTH_SHORT).show();
+
         }
     }
 }

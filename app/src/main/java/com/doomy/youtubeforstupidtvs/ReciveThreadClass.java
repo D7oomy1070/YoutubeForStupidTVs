@@ -3,10 +3,10 @@ package com.doomy.youtubeforstupidtvs;
 import android.os.Handler;
 import android.os.HandlerThread;
 
-public class Recive extends HandlerThread {
+public class ReciveThreadClass extends HandlerThread {
 
     private Handler mReciveHandler;
-    public Recive(String name) {
+    public ReciveThreadClass(String name) {
         super(name);
     }
 
