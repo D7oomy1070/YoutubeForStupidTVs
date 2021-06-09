@@ -1,3 +1,4 @@
+/*
 package com.doomy.youtubeforstupidtvs;
 
 import java.net.DatagramPacket;
@@ -88,4 +89,4 @@ public class UDP_Recive
         if (Build.VERSION.SDK_INT >= 11) async_cient.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         else async_cient.execute();
     }
-}
+}*/

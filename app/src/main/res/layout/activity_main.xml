@@ -5,15 +5,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:orientation="horizontal">
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/cardview_dark_background">
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/gif"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+
+        android:src="@drawable/loadinggif" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:gravity="center"
+        android:text="Waiting for connection.."
+        android:textSize="21dp"
+        android:textColor="@color/white"
+        />
 
     <view
         android:id="@+id/youtubeView"
         class="com.google.android.youtube.player.YouTubePlayerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
- />
-
+        android:visibility="gone"
+        tools:visibility="gone" />
 
 </LinearLayout>
 

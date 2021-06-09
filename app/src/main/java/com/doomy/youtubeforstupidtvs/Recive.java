@@ -3,55 +3,22 @@ package com.doomy.youtubeforstupidtvs;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerView;
+import android.view.View;
+import android.widget.ImageView;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
-
-public class Listener extends Thread {
+public class Recive extends Thread{
     Handler uiHandler= new Handler(Looper.getMainLooper());
-    YouTubePlayer youTubePlayerObject;
-    YouTubePlayerView youTubePlayerView;
-    YouTubePlayer.OnInitializedListener OnInitializedListener;
-
-    Listener(YouTubePlayer yp, YouTubePlayerView ypv, YouTubePlayer.OnInitializedListener OnIni){
-        youTubePlayerObject = yp;
-        youTubePlayerView = ypv;
-        OnInitializedListener = OnIni;
-        Log.i("Status","I am the Listener Class's Constructor");
+    MainActivity mainActivity;
+    Recive(MainActivity mainActivity){
+        this.mainActivity = mainActivity;
     }
-
-    void RunTest(String Msg){
-        OnInitializedListener = new YouTubePlayer.OnInitializedListener() {
-            @Override
-            public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
-                youTubePlayerObject = youTubePlayer;
-                youTubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.MINIMAL);
-                youTubePlayer.loadVideo(Msg);
-
-
-
-            }
-            // }
-
-            @Override
-            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-
-            }
-        };
-
-        youTubePlayerView.initialize("View",OnInitializedListener);
-    }
-
     @Override
     public void run() {
-
         try{
             while(true){
                 InetAddress ip = InetAddress.getByName("224.1.0.7");
@@ -83,12 +50,10 @@ public class Listener extends Thread {
                 uiHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        if (finalMsg.equals("clear") && youTubePlayerObject != null){
-                            youTubePlayerObject.release();
-
-
+                        if (finalMsg.equals("clear")){
+                        mainActivity.TakeAction("clear");
                         }else{
-                            RunTest(finalMsg);
+                        mainActivity.TakeAction("start",finalMsg);
                         }
 
                     }
@@ -103,6 +68,4 @@ public class Listener extends Thread {
 
         }
     }
-
-
 }
