@@ -1,4 +1,4 @@
-package com.doomy.youtubeforstupidtvs;
+package com.doomy.dotube;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
@@ -6,16 +6,11 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.google.android.youtube.player.YouTubeBaseActivity;
-import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 
-import pl.droidsonroids.gif.GifAnimationMetaData;
-
 public class MainActivity extends YouTubeBaseActivity {
 
-
-    boolean thereIsVideoPlaying = false;
 
     // ** For YouTube API ** //
     YouTubePlayerView youTubePlayerView;
@@ -27,7 +22,6 @@ public class MainActivity extends YouTubeBaseActivity {
     TextView textView; // Loading Text
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,46 +29,44 @@ public class MainActivity extends YouTubeBaseActivity {
 
         youTubePlayerView = findViewById(R.id.youtubeView);
         textView = findViewById(R.id.textView);
+        gif = findViewById(R.id.gif);// Start loading animation after waiting for commands
 
         // ** Set FullScreen and Landscape Orientation ** //
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         ///////////////////////////////////////////////////////
 
-        // Start waiting for commands
+        // ** Start waiting for commands ** //
+
         Recive recive = new Recive(this);
         recive.start();
-        gif = findViewById(R.id.gif);// Start loading animation after waiting for commands
-        gif.setVisibility(View.VISIBLE);
         ////////////////////////////////////////////////////////
     }
 
     // Fire it up when there is a command received
     ////////////////////////////////////////////////
-    public void TakeAction(String command){
-        if(command.equals("clear")){
-            gif.setVisibility(View.VISIBLE);
-            textView.setVisibility(View.VISIBLE);
-            youTubePlayerView.setVisibility(View.GONE);
-            youTubePlayerObject.release();
-        }
-    }
-    public void TakeAction(String command,String link){
-        if(command.equals("start")){
-            gif.setVisibility(View.GONE);
-            textView.setVisibility(View.GONE);
-            youTubePlayerView.setVisibility(View.VISIBLE);
-            runVideo(link);
+public void uiState(int state){
+        switch(state){
+            case 0: //There is no video running at the moment
+                gif.setVisibility(View.VISIBLE);
+                textView.setVisibility(View.VISIBLE);
+                youTubePlayerView.setVisibility(View.GONE);
+                break;
+            case 1:// There is a video running right now
+                gif.setVisibility(View.GONE);
+                textView.setVisibility(View.GONE);
+                youTubePlayerView.setVisibility(View.VISIBLE);
+                break;
+            case 2:
+
+                break;
 
 
         }
-    }
+}
 //////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////
-public void runVideo(String Link){
-        Youtube_Manager youtube_manager = new Youtube_Manager(youTubePlayerObject,youTubePlayerView,onInitializedListener,Link);
-        youtube_manager.start();
-}
+
 
 } // End of Class
 

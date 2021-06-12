@@ -1,4 +1,4 @@
-package com.doomy.youtubeforstupidtvs;
+package com.doomy.dotube;
 
 import org.junit.Test;
 

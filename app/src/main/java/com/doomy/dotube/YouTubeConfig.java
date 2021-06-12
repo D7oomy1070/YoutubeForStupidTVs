@@ -1,4 +1,4 @@
-package com.doomy.youtubeforstupidtvs;
+package com.doomy.dotube;
 
 public class YouTubeConfig {
 

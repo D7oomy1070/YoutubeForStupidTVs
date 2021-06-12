@@ -1,10 +1,4 @@
-package com.doomy.youtubeforstupidtvs;
-
-import android.widget.EditText;
-import android.widget.Toast;
-
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
+package com.doomy.dotube;
 
 public class RunnablesClass {
     MainActivity mainActivity;

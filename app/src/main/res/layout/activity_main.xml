@@ -15,7 +15,9 @@
         android:layout_height="50dp"
         android:layout_gravity="center"
 
-        android:src="@drawable/loadinggif" />
+        android:src="@drawable/loadinggif"
+        android:visibility="visible"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/textView"
@@ -24,9 +26,10 @@
         android:layout_weight="0"
         android:gravity="center"
         android:text="Waiting for connection.."
-        android:textSize="21dp"
         android:textColor="@color/white"
-        />
+        android:textSize="21dp"
+        android:visibility="visible"
+        tools:visibility="visible" />
 
     <view
         android:id="@+id/youtubeView"

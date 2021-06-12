@@ -4,8 +4,8 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.doomy.youtubeforstupidtvs",
-  "variantName": "processReleaseResources",
+  "applicationId": "com.doomy.dotube",
+  "variantName": "release",
   "elements": [
     {
       "type": "SINGLE",

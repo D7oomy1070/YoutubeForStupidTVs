@@ -1,7 +1,6 @@
-package com.doomy.youtubeforstupidtvs;
+package com.doomy.dotube;
 
-import android.os.Handler;
-import android.os.Looper;
+import android.os.*;
 import android.util.Log;
 
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -19,15 +18,20 @@ public class Listener extends Thread {
     YouTubePlayer youTubePlayerObject;
     YouTubePlayerView youTubePlayerView;
     YouTubePlayer.OnInitializedListener OnInitializedListener;
+    MainActivity mainActivity;
 
-    Listener(YouTubePlayer yp, YouTubePlayerView ypv, YouTubePlayer.OnInitializedListener OnIni){
-        youTubePlayerObject = yp;
-        youTubePlayerView = ypv;
-        OnInitializedListener = OnIni;
+    Listener(MainActivity mainActivity){
+        this.youTubePlayerObject = mainActivity.youTubePlayerObject;
+        this.youTubePlayerView = mainActivity.youTubePlayerView;
+        this.OnInitializedListener = mainActivity.onInitializedListener;
+        this.mainActivity = mainActivity;
         Log.i("Status","I am the Listener Class's Constructor");
     }
 
+
+
     void RunTest(String Msg){
+
         OnInitializedListener = new YouTubePlayer.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
@@ -85,10 +89,11 @@ public class Listener extends Thread {
                     public void run() {
                         if (finalMsg.equals("clear") && youTubePlayerObject != null){
                             youTubePlayerObject.release();
-
+                            mainActivity.uiState(0);
 
                         }else{
                             RunTest(finalMsg);
+                            mainActivity.uiState(1);
                         }
 
                     }

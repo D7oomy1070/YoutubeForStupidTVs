@@ -1,10 +1,7 @@
-package com.doomy.youtubeforstupidtvs;
+package com.doomy.dotube;
 
-import android.os.Handler;
-import android.os.Looper;
+import android.os.*;
 import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -14,9 +11,12 @@ import java.net.MulticastSocket;
 public class Recive extends Thread{
     Handler uiHandler= new Handler(Looper.getMainLooper());
     MainActivity mainActivity;
+    Youtube_Manager youtube_manager;
     Recive(MainActivity mainActivity){
         this.mainActivity = mainActivity;
+        this.youtube_manager = new Youtube_Manager(mainActivity.youTubePlayerView, mainActivity.onInitializedListener);
     }
+
     @Override
     public void run() {
         try{
@@ -51,10 +51,23 @@ public class Recive extends Thread{
                     @Override
                     public void run() {
                         if (finalMsg.equals("clear")){
-                        mainActivity.TakeAction("clear");
-                        }else{
-                        mainActivity.TakeAction("start",finalMsg);
+                            youtube_manager.releaseVideo();
+                            mainActivity.uiState(0);
+
+                        }else if(finalMsg.equals("pause")){
+                            youtube_manager.pause();
+                        }else if(finalMsg.equals("play")){
+                            youtube_manager.play();
+                        }else if(finalMsg.equals("seekForward")){
+                            youtube_manager.seekForward();
+                        }else if (finalMsg.equals("seekBackward")){
+                            youtube_manager.seekBackward();
                         }
+                        else{
+                            youtube_manager.loadVideo(finalMsg);
+                            mainActivity.uiState(1);
+                        }
+
 
                     }
 
